@@ -1,0 +1,18 @@
+{
+  "name": "고등학교 생활 도우미",
+  "short_name": "학교생활",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8f9fa",
+  "theme_color": "#4a90e2",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
+
+
+public 폴더안에 넣으세요.

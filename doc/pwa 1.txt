@@ -1,0 +1,3 @@
+<link rel="manifest" href="/manifest.json" />
+
+index.html 의 <head>태그안에 코딩함
