@@ -182,3 +182,12 @@
     border-right-color: var(--border);
   }
 }
+noClassMessage: {
+  padding: '18px',
+  textAlign: 'center',
+  color: '#888',
+  backgroundColor: '#fff9fb',
+  borderRadius: '8px',
+  fontSize: '13px',
+  fontWeight: 'bold'
+}
