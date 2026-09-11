@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-// Vercel에서는 VITE_API_BASE_URL에 Google Cloud 백엔드의 공개 주소를 설정한다.
-// 로컬 개발 중에는 설정하지 않으면 기존 FastAPI 주소를 사용한다.
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000').replace(/\/$/, '');
-
 // 🗓️ 날짜 문자열을 넣으면 요일(월, 화, 수, 목, 금, 토, 일)을 반환하는 헬퍼 함수
 const getDayOfWeek = (dateString) => {
   const days = ['일', '월', '화', '수', '목', '금', '토'];
@@ -11,12 +7,18 @@ const getDayOfWeek = (dateString) => {
   return days[dayIndex];
 };
 
+const getLocalDateString = () => {
+  const now = new Date();
+  const offset = now.getTimezoneOffset() * 60_000;
+  return new Date(now.getTime() - offset).toISOString().split('T')[0];
+};
+
 export default function App() {
   const [currentTab, setCurrentTab] = useState('main');
   const [selectedGrade, setSelectedGrade] = useState('2');
   const [selectedClass, setSelectedClass] = useState('3');
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = getLocalDateString();
   const [selectedDate, setSelectedDate] = useState(todayStr);
 
   const [selectedDay, setSelectedDay] = useState(() => {
@@ -39,7 +41,7 @@ export default function App() {
   useEffect(() => {
     const fetchTimetable = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/timetable`);
+        const response = await fetch('http://localhost:8000/api/timetable');
         const result = await response.json();
         if (result.status === 'success') {
           setTimetable(result.data);
@@ -80,7 +82,7 @@ export default function App() {
 
       setLoadingMeal(true);
       try {
-        const response = await fetch(`${API_BASE_URL}/api/meal?date=${dateParam}`);
+        const response = await fetch(`http://localhost:8000/api/meal?date=${dateParam}`);
         const result = await response.json();
 
         if (result.status === 'success') {
@@ -184,7 +186,7 @@ export default function App() {
     setTimetable(newTimetable);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/timetable`, {
+      const response = await fetch('http://localhost:8000/api/timetable', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newTimetable),
