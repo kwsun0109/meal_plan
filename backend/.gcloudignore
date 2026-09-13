@@ -1,0 +1,7 @@
+.gcloudignore
+.git
+.gitignore
+.env
+__pycache__/
+*.py[cod]
+food_court_counter.py

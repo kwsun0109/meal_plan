@@ -27,10 +27,11 @@ TIMETABLE_FILE = Path("timetable.json")
 
 if not TIMETABLE_FILE.exists():
     with open(TIMETABLE_FILE, "w", encoding="utf-8") as f:
-        json.dump({
-            '2-3-월': ['문학', '확률과 통계', '영어 I', '한국사', '물리학 I', '체육', '동아리'],
-            '2-3-화': ['영어 I', '문학', '화학 I', '수학 II', '정보', '음악', '진로활동'],
-        }, f, ensure_ascii=False, indent=4)
+        json.dump({}, f, ensure_ascii=False, indent=4)
+
+@app.get("/")
+async def root():
+    return {"status": "ok", "message": "NEIS Backend API is running"}
 
 @app.get("/api/meal")
 async def get_meal(date: str):
