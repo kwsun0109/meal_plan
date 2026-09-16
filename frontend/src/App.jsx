@@ -50,7 +50,7 @@ export default function App() {
   useEffect(() => {
     const fetchTimetable = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/timetable');
+        const response = await fetch(`${API_BASE_URL}/api/timetable`);
         const result = await response.json();
 
         if (result.status === 'success') {
@@ -93,9 +93,7 @@ export default function App() {
       setLoadingMeal(true);
 
       try {
-        const response = await fetch(
-          `http://localhost:8000/api/meal?date=${dateParam}`,
-        );
+        const response = await fetch(`${API_BASE_URL}/api/meal?date=${dateParam}`);
         const result = await response.json();
 
         if (result.status === 'success') {
@@ -197,7 +195,7 @@ export default function App() {
     setTimetable(newTimetable);
 
     try {
-      const response = await fetch('http://localhost:8000/api/timetable', {
+      const response = await fetch(`${API_BASE_URL}/api/timetable`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newTimetable),
