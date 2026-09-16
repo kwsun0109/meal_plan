@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+
 const getDayOfWeek = (dateString) => {
   const days = ['일', '월', '화', '수', '목', '금', '토'];
   // 날짜 문자열을 파싱할 때 시간대 오프셋을 방지하기 위해 T00:00:00을 추가합니다.
