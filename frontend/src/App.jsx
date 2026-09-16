@@ -2,19 +2,21 @@ import React, { useEffect, useState } from 'react';
 
 const getDayOfWeek = (dateString) => {
   const days = ['일', '월', '화', '수', '목', '금', '토'];
+  // 날짜 문자열을 파싱할 때 시간대 오프셋을 방지하기 위해 T00:00:00을 추가합니다.
   return days[new Date(`${dateString}T00:00:00`).getDay()];
 };
 
 const getLocalDateString = () => {
   const now = new Date();
-  const offset = now.getTimezoneOffset() * 60_000;
-  return new Date(now.getTime() - offset).toISOString().split('T')[0];
+  // 한국 시간(KST)을 정확하게 계산하기 위해 오프셋 적용 (UTC+9)
+  const kstDate = new Date(now.getTime() + (9 * 60 * 60 * 1000));
+  return kstDate.toISOString().split('T')[0];
 };
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState('main');
   const [selectedGrade, setSelectedGrade] = useState('2');
-  const [selectedClass, setSelectedClass] = useState('3');
+  const [selectedClass, setSelectedClass] = useState('5');
 
   const todayStr = getLocalDateString();
   const [selectedDate, setSelectedDate] = useState(todayStr);
@@ -37,6 +39,7 @@ export default function App() {
   const [editList, setEditList] = useState(Array(7).fill(''));
 
   const currentKey = `${selectedGrade}-${selectedClass}-${selectedDay}`;
+  // 선택한 날짜의 요일 계산
   const selectedDateDay = getDayOfWeek(selectedDate);
   const isWeekend = ['토', '일'].includes(selectedDateDay);
   const currentTimetableList =
@@ -69,6 +72,7 @@ export default function App() {
     const newDate = e.target.value;
     setSelectedDate(newDate);
 
+    // 날짜 선택 시 요일을 자동으로 해당 날짜의 요일로 업데이트
     const day = getDayOfWeek(newDate);
     if (['월', '화', '수', '목', '금'].includes(day)) {
       setSelectedDay(day);
@@ -316,18 +320,22 @@ export default function App() {
                 <div style={{ ...styles.cardTitle, margin: 0 }}>
                   📋 급식 식단표 (나이스 연동)
                 </div>
-
                 <input
                   type="date"
                   value={selectedDate}
                   onChange={handleDateChange}
                   style={styles.datePicker}
+                  className="custom-date-input"
                 />
               </div>
 
+              {/* 🔥 중요 수정 부분: 요일을 함께 표시 */}
               <div style={styles.selectedDateText}>
-                🗓️ 선택한 날짜: {selectedDate} ({selectedDateDay}요일){' '}
-                {loadingMeal && '(불러오는 중...)'}
+                🗓️ 선택한 날짜:{' '}
+                <span style={styles.dateDisplay}>
+                  {selectedDate} ({selectedDateDay}요일)
+                </span>
+                {loadingMeal && ' (불러오는 중...)'}
               </div>
 
               <div style={styles.menuGrid}>
@@ -640,5 +648,14 @@ const styles = {
     fontWeight: 'bold',
     cursor: 'pointer',
     boxShadow: '0 4px 8px rgba(255, 117, 140, 0.3)',
+  },
+  dateDayBadge: {
+    fontSize: '11px',
+    fontWeight: 'bold',
+    color: '#fff',
+    backgroundColor: '#ff85a1',
+    padding: '3px 7px',
+    borderRadius: '6px',
+    whiteSpace: 'nowrap',
   },
 };

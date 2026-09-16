@@ -191,3 +191,17 @@ noClassMessage: {
   fontSize: '13px',
   fontWeight: 'bold'
 }
+.custom-date-input {
+  padding: 3px 6px;
+  border: 1px solid #ffccd5;
+  border-radius: 6px;
+  font-size: 11px;
+  background-color: #fff9fb;
+  color: #d6336c;
+  font-weight: bold;
+  outline: none;
+}
+
+/* .custom-date-input::-webkit-calendar-picker-indicator {
+  display: none;
+} */
